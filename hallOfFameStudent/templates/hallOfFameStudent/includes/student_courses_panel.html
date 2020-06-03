@@ -1,5 +1,6 @@
 <article class="panel is-dark" style="max-height: 100%">
-    <div class="panel-heading is-size-3 has-text-centered has-text-light" style="border-bottom: 4px solid #00D1B2; background: #00917C;">
+    <div class="panel-heading is-size-3 has-text-centered has-text-light"
+         style="border-bottom: 4px solid #00D1B2; background: #00917C;">
         <p class="has-text-centered">
             Courses
         </p>
@@ -45,24 +46,24 @@
             <tbody>
             {% for course in courses %}
                 {% with sub=course.subject %}
-                <tr>
-                    <th>{{ forloop.counter }}</th>
-                    <td class="is-paddingless is-fullheight">
-                        <a href="{% url 'student:subject' course.id %}" style="background: none; border: none;"
-                           class="has-text-left button is-block is-fullheight is-fullwidth is-radiusless">
-                            {{ sub.name }}
-                        </a>
-                    </td>
-                    <td>
-                        <p class="is-info">{{ sub.description }}</p>
-                    </td>
-                    <td>
-                        <p class="is-info">{{ course.name }}</p>
-                    </td>
-                    <td>
-                        <p class="is-info">{{ sub.etcs }}</p>
-                    </td>
-                </tr>
+                    <tr>
+                        <th>{{ forloop.counter }}</th>
+                        <td class="is-paddingless is-fullheight">
+                            <a href="{% url 'student:subject' course.id %}" style="background: none; border: none;"
+                               class="has-text-left button is-block is-fullheight is-fullwidth is-radiusless">
+                                {{ sub.name }}
+                            </a>
+                        </td>
+                        <td>
+                            <p class="is-info">{{ sub.description }}</p>
+                        </td>
+                        <td>
+                            <p class="is-info">{{ course.name }}</p>
+                        </td>
+                        <td>
+                            <p class="is-info">{{ sub.etcs }}</p>
+                        </td>
+                    </tr>
                 {% endwith %}
             {% empty %}
                 <tr>

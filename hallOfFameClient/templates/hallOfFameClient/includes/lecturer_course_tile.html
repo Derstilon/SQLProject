@@ -7,15 +7,13 @@
                href="{% url "lecturer:hallOfFameClient_subject_change" sub.pk %}">
                 <i class="fas fa-edit"></i>
             </a>
-            {#            <div class="level is-fullwidth">#}
             <p class="has-text-centered is-size-3" style="padding: 0 3rem">
                 {{ sub.name }}
             </p>
-            {#            </div>#}
         </div>
         <div class="panel-block has-text-light is-block" style="border-bottom: 1px solid #15405C; background: #15405C;">
             <div class="columns is-gapless is-mobile">
-                <div class="column is-4 has-text-centered has-text-light">
+                <div class="column is-4-tablet has-text-centered has-text-light">
                     <div class="is-pulled-right">
                         <p class="heading">Total students</p>
                         <a class="title has-text-light is-size-1">
@@ -28,7 +26,7 @@
                         <i class="fas fa-4x fa-school"></i>
                     </span>
                 </div>
-                <div class="column is-4 has-text-centered has-text-light">
+                <div class="column is-4-tablet has-text-centered has-text-light">
                     <div class="is-pulled-left">
                         <p class="heading">Course ETCS points</p>
                         <a class="title has-text-light is-size-1">
@@ -44,7 +42,7 @@
         <p class="panel-block has-text-light" style="background: #15405C;">
         </p>
         {% if groups %}
-        {% include 'hallOfFameClient/includes/groups_comparation_chart.html' with chart_ID=sub.pk chart_data=chart_data|key:sub.pk  id_data=sub.pk|data_id %}
+            {% include 'hallOfFameClient/includes/groups_comparation_chart.html' with chart_ID=sub.pk chart_data=chart_data|key:sub.pk  id_data=sub.pk|dataId %}
         {% endif %}
         <div class="panel-block columns is-centered">
             <div class="column is-four-fifths is-flex" style="flex-wrap: wrap;">
@@ -71,31 +69,6 @@
                             </p>
                         </div>
                     </div>
-                 {% comment %}   {% if forloop.counter0|divisibleby:3 %}
-                        <div class="tile is-parent columns">{% endif %}
-                <div class="tile is-child column" style="max-width: 100%;">
-                    <div class="field has-addons">
-                        <p class="control">
-                            <a href="{% url "lecturer:subject_scores" pk=gru.subject.pk group_pk=gru.pk %}"
-                               class="button card level is-marginless is-info is-text is-outlined">
-                                    <span class="icon is-small">
-                                        <i class="fas fa-book"></i>
-                                    </span>
-                                <span>{{ gru.name }}</span>
-                                <span style="padding-left: 1rem">{{ gru.students.count }}os</span>
-                            </a>
-                        </p>
-                        <p class="control">
-                            <a href=" {% url "lecturer:hallOfFameClient_group_change" gru.pk %}"
-                               class="button card level is-marginless is-info is-text is-outlined">
-                                    <span class="icon is-small">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                {% if forloop.counter|divisibleby:3 %}</div>{% endif %}{% endcomment %}
                 {% empty %}
                     <div class="tile is-child">
                         <br/>
@@ -106,8 +79,3 @@
         </div>
     </article>
 </div>
-{# #eef6fc #246C9C #DB6D3D #}
-{% comment %}
-<article class="panel is-{{ primary_color|default:"info" }}">
-
-</article>{% endcomment %}

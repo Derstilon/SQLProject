@@ -23,7 +23,6 @@
     </section>
 {% endblock %}
 {% block content %}
-    {#    <p>{{ subject.description }}</p>#}
     <section
             style='min-height: 79vh; background-image: url("{% static 'img/spiral-cut.png' %}"); background-position: bottom; background-repeat: no-repeat; background-size:30%;'
             class="section">
@@ -40,23 +39,18 @@
                     {% include 'hallOfFameClient/includes/group_tab_grades_tile.html' with group=group subject=subject %}
                 </div>
             </div>
-            
+
             {% if group.ranking|length > 0 %}
-            <div class="columns is-centered">
-                <div class="column is-four-fifths-desktop is-12-tablet tile is-ancestor is-vertical">
-                    {% include 'hallOfFameClient/includes/group_ranks_panel.html' with group_ranking=group.ranking %}
+                <div class="columns is-centered">
+                    <div class="column is-four-fifths-desktop is-12-tablet tile is-ancestor is-vertical">
+                        {% include 'hallOfFameClient/includes/group_ranks_panel.html' with group_ranking=group.ranking %}
+                    </div>
                 </div>
-            </div>
             {% endif %}
 
         {% endfor %}
 
     </section>
-
-
-    {{ temp }}
-
-
     <script>
         const scoreFields = document.querySelectorAll('.score_field');
         const form = document.querySelector('#updateScoresForm');

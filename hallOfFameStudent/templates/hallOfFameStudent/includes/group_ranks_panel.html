@@ -1,6 +1,7 @@
-{% load static hallOfFame_extra%}
+{% load static hallOfFame_extra %}
 <article class="panel is-dark" style="height: 100%;">
-    <div class="panel-heading is-size-3 has-text-centered has-text-light" style="border-bottom: 4px solid #ffdd57; background: #636363;">
+    <div class="panel-heading is-size-3 has-text-centered has-text-light"
+         style="border-bottom: 4px solid #ffdd57; background: #636363;">
         <p class="has-text-centered">
             Rankings
         </p>
@@ -33,161 +34,65 @@
     <p class="panel-block has-text-light has-background-dark">
     </p>
     <div class="panel-block is-block is-paddingless">
-        <div class="table-container" >
+        <div class="table-container">
             <table class="table is-fullwidth is-size-5 is-hoverable is-striped">
                 <thead>
-                    <tr class="is-bold" style="background: #fffbeb">
-                        <th></th>
-                        <th><abbr title="Student on this rank">Student</abbr></th>
-                        <th><abbr title="Rank difference from last update">Difference</abbr></th>
-                        <th><abbr title="Average from this course">Average</abbr></th>
-                    </tr>
+                <tr class="is-bold" style="background: #fffbeb">
+                    <th></th>
+                    <th><abbr title="Student on this rank">Student</abbr></th>
+                    <th><abbr title="Rank difference from last update">Difference</abbr></th>
+                    <th><abbr title="Average from this course">Average</abbr></th>
+                </tr>
                 </thead>
                 <tbody>
-                    {% for ranking in group_ranking.student_ranking %}
+                {% for ranking in group_ranking.student_ranking %}
                     {% with student=ranking.student difference=group_ranking|key:ranking.student.pk %}
-                    <tr>
-                        <th>#{{ ranking.pos }}</th>
-                        <td>
+                        <tr>
+                            <th>#{{ ranking.pos }}</th>
+                            <td>
                             <span>
                                 {{ student.name }} {{ " " }} {{ student.surname }}
                             </span>
-                            {% if ranking.pos == 1 %}
-                            <span class="is-icon is-medium has-text-warning">
+                                {% if ranking.pos == 1 %}
+                                    <span class="is-icon is-medium has-text-warning">
                                 <i class="fas fa-fw fa-lg fa-medal"></i>
                             </span>
-                            {% elif ranking.pos == 2 %}
-                            <span class="is-icon is-medium has-text-grey-light">
+                                {% elif ranking.pos == 2 %}
+                                    <span class="is-icon is-medium has-text-grey-light">
                                 <i class="fas fa-fw fa-lg fa-medal"></i>
                             </span>
-                            {% elif ranking.pos == 3%}
-                            <span class="is-icon is-medium" style="color: #CD7F32">
+                                {% elif ranking.pos == 3 %}
+                                    <span class="is-icon is-medium" style="color: #CD7F32">
                                 <i class="fas fa-fw fa-lg fa-medal"></i>
                             </span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if difference > 0 %}
-                            <p class="has-text-success">
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if difference > 0 %}
+                                    <p class="has-text-success">
                                 <span class="is-icon is-medium is-pulled-left">
                                     <i class="fas fa-fg fa-caret-square-up"></i>
                                 </span>
-                                <span>(+{{ difference }})</span>
-                            </p>
-                            {% elif difference < 0 %}
-                            <p class="has-text-danger">
+                                        <span>(+{{ difference }})</span>
+                                    </p>
+                                {% elif difference < 0 %}
+                                    <p class="has-text-danger">
                                 <span class="is-icon is-medium is-pulled-left">
                                     <i class="fas fa-fg fa-caret-square-down"></i>
                                 </span>
-                                <span>( {{ difference }})</span>
-                            </p>
-                            {% else %}
-                            <p class="has-text-info">
-                                <span>(-)</span>
-                            </p>
-                            {% endif %}
-                        </td>
-                        <td>{{ ranking.mean_value|round_to:2 }}%</td>
-                    </tr>
+                                        <span>( {{ difference }})</span>
+                                    </p>
+                                {% else %}
+                                    <p class="has-text-info">
+                                        <span>(-)</span>
+                                    </p>
+                                {% endif %}
+                            </td>
+                            <td>{{ ranking.mean_value|roundTo:2 }}%</td>
+                        </tr>
                     {% endwith %}
-                    {% empty %}
-                    {% endfor %}
-                    {% comment %}<tr>
-                        <th>#2</th>
-                        <td>
-                            <span>Michał Krawczyk</span>
-                            <span class="is-icon is-medium has-text-grey-light">
-                                <i class="fas fa-fw fa-lg fa-medal"></i>
-                            </span>
-                        </td>
-                        <td>
-                            <p class="has-text-success">
-                                <span class="is-icon is-medium is-pulled-left">
-                                    <i class="fas fa-fg fa-caret-square-up"></i>
-                                </span>
-                                <span>(+1)</span>
-                            </p>
-                        </td>
-                        <td>93%</td>
-                    </tr>
-                    <tr>
-                        <th>#3</th>
-                        <td>
-                            <span>Michał Krawczyk</span>
-                            <span class="is-icon is-medium" style="color: #CD7F32">
-                                <i class="fas fa-fw fa-lg fa-medal"></i>
-                            </span>
-                        </td>
-                        <td>
-                            <p class="has-text-danger">
-                                <span class="is-icon is-medium is-pulled-left">
-                                    <i class="fas fa-fg fa-caret-square-down"></i>
-                                </span>
-                                <span>(- 2)</span>
-                            </p>
-                        </td>
-                        <td>89%</td>
-                    </tr>
-                    <tr>
-                        <th>#4</th>
-                        <td>
-                            <span>Michał Krawczyk</span>
-                        </td>
-                        <td>
-                            <p class="has-text-danger">
-                                <span class="is-icon is-medium is-pulled-left">
-                                    <i class="fas fa-fg fa-caret-square-down"></i>
-                                </span>
-                                <span>(- 2)</span>
-                            </p>
-                        </td>
-                        <td>88%</td>
-                    </tr>
-                    <tr>
-                        <th>#5</th>
-                        <td>
-                            <span>Michał Krawczyk</span>
-                        </td>
-                        <td>
-                            <p class="has-text-success">
-                                <span class="is-icon is-medium is-pulled-left">
-                                    <i class="fas fa-fg fa-caret-square-up"></i>
-                                </span>
-                                <span>(+2)</span>
-                            </p>
-                        </td>
-                        <td>87%</td>
-                    </tr>
-                    <tr>
-                        <th>#6</th>
-                        <td>
-                            <span>Michał Krawczyk</span>
-                        </td>
-                        <td>
-                            <p class="has-text-danger">
-                                <span class="is-icon is-medium is-pulled-left">
-                                    <i class="fas fa-fg fa-caret-square-down"></i>
-                                </span>
-                                <span>(- 1)</span>
-                            </p>
-                        </td>
-                        <td>84%</td>
-                    </tr>
-                    <tr>
-                        <th>#7</th>
-                        <td>
-                            <span>Michał Krawczyk</span>
-                        </td>
-                        <td>
-                            <p class="has-text-danger">
-                                <span class="is-icon is-medium is-pulled-left">
-                                    <i class="fas fa-fg fa-caret-square-down"></i>
-                                </span>
-                                <span>(- 1)</span>
-                            </p>
-                        </td>
-                        <td>82%</td>
-                    </tr>{% endcomment %}
+                {% empty %}
+                {% endfor %}
                 </tbody>
             </table>
         </div>

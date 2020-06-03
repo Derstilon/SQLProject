@@ -2,38 +2,33 @@
 {% load static %}
 
 {% block hero %}
-  {% with 'primary' as primary_color %}
-  {{block.super}}
-  {% endwith %}
+    {% with 'primary' as primary_color %}
+        {{ block.super }}
+    {% endwith %}
 {% endblock %}
 
 {% block brand %}
     <div class="navbar-brand">
-        {#        {% if color == "is-primary" %}#}
         <a href="{% url "world:main" %}" class="navbar-item">
             <img src="{% static 'img/ostatniLearningPrimary.png' %}" alt="Logo">
-            {#        {% else %}#}
-            {#        <a href="#" class="navbar-item">#}
-            {#            <img src="{% static 'img/ostatniLearningInfo.png' %}" alt="Logo">#}
-            {#        {% endif %}#}
         </a>
         <div class="navbar-item is-hidden-desktop">
-        {% block mob_logout %}
-        <a href="{% url "student:logout" %}" class="button is-{{ primary_color }} is-outlined is-inverted">
+            {% block mob_logout %}
+                <a href="{% url "student:logout" %}" class="button is-{{ primary_color }} is-outlined is-inverted">
             <span class="icon">
                 <i class="fas fa-sign-out-alt"></i>
             </span>
-        </a>
-        {% endblock %}
+                </a>
+            {% endblock %}
         </div>
     </div>
 {% endblock %}
 
 {% block logout %}
-<a href="{% url "student:logout" %}" class="button is-primary is-inverted">
+    <a href="{% url "student:logout" %}" class="button is-primary is-inverted">
     <span class="icon">
         <i class="fas fa-sign-out-alt"></i>
     </span>
-    <span>Sign out</span>
-</a>
+        <span>Sign out</span>
+    </a>
 {% endblock %}

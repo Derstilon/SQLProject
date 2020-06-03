@@ -8,7 +8,7 @@
     </div>
     <div class="panel-block has-text-light has-background-dark is-block" style="border-bottom: 2px solid #f5f5f5;">
         <div class="columns is-gapless is-mobile">
-            <div class="column is-4 has-text-centered has-text-light">
+            <div class="column is-4-tablet is-5-mobile has-text-centered has-text-light">
                 <div class="is-pulled-right">
                     <p class="heading">My Average</p>
                     <a class="title has-text-light is-size-1">
@@ -21,7 +21,8 @@
                     <i class="fas fa-4x fa-trophy"></i>
                 </span>
             </p>
-            <div class="column is-4 has-text-centered has-text-light">
+            <div class="column is-hidden-tablet is-2-mobile"></div>
+            <div class="column is-4-tablet is-5-mobile has-text-centered has-text-light">
                 <div class="is-pulled-left">
                     <p class="heading">My Group Rank</p>
                     <a class="title has-text-light is-size-1">
@@ -88,7 +89,7 @@
                                     </p>
                                 {% endif %}
                             </td>
-                            <td>{{ ranking.mean_value|roundTo:2 }}%</td>
+                            <td>{{ ranking.mean_value|round_to:2 }}%</td>
                         </tr>
                     {% endwith %}
                 {% empty %}

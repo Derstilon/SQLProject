@@ -9,11 +9,12 @@
     {% block extrastyle %}
     {% endblock %}
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+    {% block blockbots %}
+        <meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
     {% block extrahead %}{% endblock %}
 </head>
 <body>
-    {% block hero %}
+{% block hero %}
     <section class="hero is-{{ primary_color }} is-bold">
         <div class="hero-head">
             <nav class="navbar">
@@ -33,7 +34,8 @@
                                 </span>
                                 <span class="navbar-item">
                                     {% block logout %}
-                                    <a href="{% url "lecturer:logout" %}" class="button is-{{ primary_color }} is-inverted">
+                                        <a href="{% url "lecturer:logout" %}"
+                                           class="button is-{{ primary_color }} is-inverted">
                                         <span class="icon">
                                             <i class="fas fa-sign-out-alt"></i>
                                         </span>
@@ -55,8 +57,8 @@
             </div>
         </div>
     </section>
-    {% endblock %}
-    {% block breadcrumb %}{% endblock %}
-    {% block content %}{% endblock %}
+{% endblock %}
+{% block breadcrumb %}{% endblock %}
+{% block content %}{% endblock %}
 </body>
 </html>

@@ -1,7 +1,6 @@
 {% extends 'hallOfFameClient/base_site.html' %}
 {% load static hallOfFame_extra %}
 {% block title %}Dashboard{% endblock %}
-{#Wiodki nie korzystaja z tego samego base w admin i tu #}
 {% block herotitle %}My Dashboard{% endblock %}
 {% block breadcrumb %}
     <section style="padding: 1rem" class="section card">
@@ -22,9 +21,10 @@
         <div class="columns is-centered">
             <div class="column is-four-fifths tile is-ancestor is-vertical">
                 {% for sub in subjects %}
-                    {% if forloop.counter0|divisibleby:2 %}<div class="tile is-parent columns">{% endif %}
-                    {% include 'hallOfFameClient/includes/lecturer_course_tile.html' with groups=groups_by_sub|key:sub.pk sub=sub  quantity=subjects_quantity|key:sub.pk %}
-                    {% if forloop.counter|divisibleby:2 %}</div>{% endif %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <div class="tile is-parent columns">{% endif %}
+                {% include 'hallOfFameClient/includes/lecturer_course_tile.html' with groups=groups_by_sub|key:sub.pk sub=sub  quantity=subjects_quantity|key:sub.pk %}
+                {% if forloop.counter|divisibleby:2 %}</div>{% endif %}
                 {% endfor %}
             </div>
         </div>

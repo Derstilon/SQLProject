@@ -4,22 +4,24 @@
         document.getElementById("exercises").classList.remove("pending-list")
         document.getElementById("exercises").classList.add("checked-list")
     }
+
     function toggle_pending() {
         document.getElementById("exercises").classList.remove("checked-list")
         document.getElementById("exercises").classList.add("pending-list")
     }
 </script>
 <article id="exercises" class="panel is-danger checked-list" style="height: 100%">
-    <div class="panel-heading is-size-3 navbar has-text-centered has-text-light" style="border-bottom: 4px solid #FFA6B8; padding: .5em; min-height: 0; background: #A61F3A;"> {% comment %}background: #590818;{% endcomment %}
+    <div class="panel-heading is-size-3 navbar has-text-centered has-text-light"
+         style="border-bottom: 4px solid #FFA6B8; padding: .5em; min-height: 0; background: #A61F3A;">
 
     </div>
     <div class="panel-block is-block has-background-light">
         <div class="columns is-gapless is-mobile">
             <div class="column is-8 has-text-centered">
-                    <p class="heading" style=" color: #590818;">Group Name</p>
-                    <a class="title is-size-1" style=" color: #A61F3A;">
-                        {{ group_name }}
-                    </a>
+                <p class="heading" style=" color: #590818;">Group Name</p>
+                <a class="title is-size-1" style=" color: #A61F3A;">
+                    {{ group_name }}
+                </a>
             </div>
             <p class="is-hidden-mobile column is-4 has-text-centered">
                 <span class="icon is-large is-size-4" style="color: #FFA6B8;">
@@ -59,163 +61,80 @@
     <p class="panel-block has-text-light has-background-light">
     </p>
     <div class="panel-block is-block is-paddingless">
-        <div class="table-container" >
+        <div class="table-container">
             <table class="table is-fullwidth is-size-5 is-hoverable is-striped">
                 <thead>
-                    <tr class="is-bold" style="background: #FFA6B8">
-                        <th></th>
-                        <th><abbr title="Name of the Exercise">Exercise</abbr></th>
-                        <th><abbr title="Grade assigned to this exercise">Grade</abbr></th>
-                        <th><abbr title="Percentage value of the grade">Percentage</abbr></th>
-                    </tr>
+                <tr class="is-bold" style="background: #FFA6B8">
+                    <th></th>
+                    <th><abbr title="Name of the Exercise">Exercise</abbr></th>
+                    <th><abbr title="Grade assigned to this exercise">Grade</abbr></th>
+                    <th><abbr title="Percentage value of the grade">Percentage</abbr></th>
+                </tr>
                 </thead>
                 <tbody>
                 {% for exe in pending %}
-                {% with class="pending"%}
-                    <tr class="{{ class }}">
-                        <th><i class="far fa-flag" aria-hidden="true"></i></th>
-                        <td>
+                    {% with class="pending" %}
+                        <tr class="{{ class }}">
+                            <th><i class="far fa-flag" aria-hidden="true"></i></th>
+                            <td>
                             <span>
                                 {{ exe.name }}
                             </span>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                             <span>
                                 _/{{ exe.max_score }}
                             </span>
-                        </td>
-                        <td>
-                            _
-                        </td>
-                    </tr>
-                {% endwith %}
+                            </td>
+                            <td>
+                                _
+                            </td>
+                        </tr>
+                    {% endwith %}
                 {% empty %}
-                {% with class="pending"%}
-                    <tr class="{{ class }}">
-                        <td colspan="4">no {{ class }} exercises yet</td>
-                    </tr>
-                {% endwith %}
+                    {% with class="pending" %}
+                        <tr class="{{ class }}">
+                            <td colspan="4">no {{ class }} exercises yet</td>
+                        </tr>
+                    {% endwith %}
                 {% endfor %}
                 {% for score in checked %}
-                {% with exe=score.exercise class="checked"%}
-                    <tr class="{{ class }}">
-                        <th><i class="far fa-flag" aria-hidden="true"></i></th>
-                        <td>
+                    {% with exe=score.exercise class="checked" %}
+                        <tr class="{{ class }}">
+                            <th><i class="far fa-flag" aria-hidden="true"></i></th>
+                            <td>
                             <span>
                                 {{ exe.name }}
                             </span>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                             <span>
                                 {{ score.value|default:'_' }}/{{ exe.max_score }}
                             </span>
-                        </td>
-                        <td>
-                            {{  score.value|percent:exe.max_score|roundTo:2 }}%
-                        </td>
-                    </tr>
-                {% endwith %}
+                            </td>
+                            <td>
+                                {{ score.value|percent:exe.max_score|roundTo:2 }}%
+                            </td>
+                        </tr>
+                    {% endwith %}
                 {% empty %}
-                {% with class="checked"%}
-                    <tr class="{{ class }}">
-                        <td colspan="4">no {{ class }} exercises yet</td>
-                    </tr>
-                {% endwith %}
+                    {% with class="checked" %}
+                        <tr class="{{ class }}">
+                            <td colspan="4">no {{ class }} exercises yet</td>
+                        </tr>
+                    {% endwith %}
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-
-
-
-
-{% comment %}
-        <a class="panel-block is-block {{ class }}">
-            <nav class="level is-fullwidth">
-                <div class="level-item column is-one-fifth is-vcentered">
-                    <span>
-                        <i class="far fa-flag" aria-hidden="true"></i>
-                    </span>
-                    <span>
-                        Exercise: {{ exe.name }}
-                    </span>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading">Note</p>
-                        <p class="title">
-                            _
-                        </p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading">Percentage</p>
-                        <p class="title">
-                            _
-                        </p>
-                    </div>
-                </div>
-            </nav>
-        </a>
-    {% endwith %}
-    {% empty %}
-        <a class="panel-block is-block {{ class }}">
-            <nav class="level is-fullwidth">
-                <div class="level-item">
-                    <h1 class="subtitle">No exercises yet.</h1>
-                </div>
-            </nav>
-        </a>
-    {% endfor %}{% endcomment %}
-{% comment %}
-    {% for score in checked %}
-    {% with exe=score.exercise class="checked"%}
-        <a class="panel-block is-block {{ class }}">
-            <nav class="level is-fullwidth">
-                <div class="level-item column is-one-fifth is-vcentered">
-                    <span>
-                        <i class="far fa-flag" aria-hidden="true"></i>
-                    </span>
-                    <span>
-                        Exercise: {{ exe.name }}
-                    </span>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading">Note</p>
-                        <p class="title">
-                            {{ score.value }}
-                        </p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading">Percentage</p>
-                        <p class="title">
-                            {{  score.value|percent:exe.max_score|roundTo:2 }}%
-                        </p>
-                    </div>
-                </div>
-            </nav>
-        </a>
-    {% endwith %}
-    {% empty %}
-        <a class="panel-block is-block {{ class }}">
-            <nav class="level is-fullwidth">
-                <div class="level-item">
-                    <h1 class="subtitle">No exercises yet.</h1>
-                </div>
-            </nav>
-        </a>
-    {% endfor %}{% endcomment %}
 </article>
 <style>
-    .checked-list tr.pending, .checked-list p.pending{
+    .checked-list tr.pending, .checked-list p.pending {
         display: none !important;
     }
-    .pending-list tr.checked, .pending-list p.checked{
+
+    .pending-list tr.checked, .pending-list p.checked {
         display: none !important;
     }
 </style>

@@ -10,18 +10,34 @@
     <div class="panel-block is-block">
         <div class="columns is-centered">
             <div class="column is-center
-            is-three-quarters-desktop is-fullwidth-tablet is-three-fifths-mobile is-offset-one-fifth-mobile
+            is-three-quarters-tablet is-three-fifths-mobile is-offset-one-fifth-mobile
             is-vertical">
                 <div style="padding-left: 0; padding-right: 0;" class="card notification">
-                    <div class="container has-text-centered ">
-                        <p style="font-size: 5.2rem;" class="title">{{ averages.my_average|round_to:2 }}%</p>
-                        <p class="subtitle">My Average</p>
+                    <div class="container has-text-centered is-hidden-tablet">
+                        <p style="font-size: 4.5rem;" class="title">{{ averages.my_average|round_to:0|add:"0" }}%</p>
+                        <p class="subtitle is-6">My Average</p>
+                    </div>
+                    <div class="container has-text-centered is-hidden-widescreen is-hidden-mobile">
+                        <p style="font-size: 4.5rem;" class="title">{{ averages.my_average|round_to:1 }}%</p>
+                        <p class="subtitle is-6">My Average</p>
+                    </div>
+                    <div class="container has-text-centered is-hidden-touch is-hidden-desktop-only">
+                        <p style="font-size: 4.5rem;" class="title">{{ averages.my_average|round_to:2 }}%</p>
+                        <p class="subtitle is-6">My Average</p>
                     </div>
                 </div>
                 <div style="padding-left: 0; padding-right: 0;" class="card notification">
-                    <div class="container has-text-centered">
-                        <p style="font-size: 3.5rem" class="title">{{ averages.semester_average|round_to:2 }}%</p>
-                        <p class="subtitle is-6">Overall Average</p>
+                    <div class="container has-text-centered is-hidden-tablet">
+                        <p style="font-size: 3rem" class="title">{{ averages.semester_average|round_to:0|add:"0" }}%</p>
+                        <p class="subtitle is-7">Overall Average</p>
+                    </div>
+                    <div class="container has-text-centered is-hidden-widescreen is-hidden-mobile">
+                        <p style="font-size: 3rem" class="title">{{ averages.semester_average|round_to:1 }}%</p>
+                        <p class="subtitle is-7">Overall Average</p>
+                    </div>
+                    <div class="container has-text-centered is-hidden-touch is-hidden-desktop-only">
+                        <p style="font-size: 3rem" class="title">{{ averages.semester_average|round_to:2 }}%</p>
+                        <p class="subtitle is-7">Overall Average</p>
                     </div>
                 </div>
             </div>

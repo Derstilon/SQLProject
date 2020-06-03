@@ -100,6 +100,7 @@ def calc_avg_subject(query_subject_avg):
         objs.append(obj)
     return objs
 
+
 def calc_subject_student(query_subject_student):
     objs = []
     for res in query_subject_student:
@@ -112,6 +113,7 @@ def calc_subject_student(query_subject_student):
 
 
 def calc_all_stats(force, to_archive):
+    print("Trying calculate")
     curr_date = timezone.now()
     last_date = ArchiveRecord.objects.all().order_by('-creation_date').first()
 
@@ -145,7 +147,7 @@ def calc_all_stats(force, to_archive):
 
     query_subject_student = StatGroupStudentScore \
         .objects.values('student__pk',
-                        'stat_group__group__subject__pk').annotate(mean_value=Avg('mean_value'),)
+                        'stat_group__group__subject__pk').annotate(mean_value=Avg('mean_value'), )
     objs = calc_subject_student(query_subject_student)
     StatSubjectStudentScore.objects.bulk_create(objs)
 

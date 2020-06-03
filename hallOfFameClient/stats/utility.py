@@ -113,6 +113,7 @@ def calc_subject_student(query_subject_student):
 
 
 def calc_all_stats(force, to_archive):
+    print("Trying calculate")
     curr_date = timezone.now()
     last_date = ArchiveRecord.objects.all().order_by('-creation_date').first()
 

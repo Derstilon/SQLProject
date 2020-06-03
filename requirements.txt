@@ -26,3 +26,4 @@ sqlparse==0.3.1
 tabulate==0.8.7
 tzlocal==2.0.0
 whitenoise==5.0.1
+django-background-tasks

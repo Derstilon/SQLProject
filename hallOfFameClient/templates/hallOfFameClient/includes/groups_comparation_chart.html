@@ -7,13 +7,6 @@
 <p class="panel-block is-block" style="padding-right: 8%">
     <canvas id="{{ chart_ID }}" width="400" height="300"></canvas>
 </p>
-{#<article class="message is-darker">#}
-{#    <div class="message-header">#}
-{#        <h1 style="width: 100%; text-align: center;" class="title has-text-light is-inline">{{ chartName }}</h1>#}
-{#    </div>#}
-{#    <div class="message-body">#}
-{#    </div>#}
-{#</article>#}
 {{ chart_data|json_script:id_data }}
 <script>
     {
@@ -22,25 +15,24 @@
         console.log(chartData);
         var myData = [];
         var groups = [];
-        for(let g of chartData)
-        {
+        for (let g of chartData) {
             myData.push(g.mean_value);
             groups.push(g.name);
         }
 
 
-        if(myData.length === 1){
+        if (myData.length === 1) {
             myData.unshift(0);
             myData.push(0);
         }
-        if(groups.length === 1){
+        if (groups.length === 1) {
             groups.unshift("");
             groups.push("");
         }
 
 
         var colors = getEvenlySpacedColors(myData);
-// shift colors
+        // shift colors
         for (let i = 0; i < parseInt(colors.length / 3.5); i++)
             arrayRotate(colors, true)
 
@@ -48,16 +40,13 @@
             colors[i] = "rgb(191, 63, 86)"
 
 
-// create array of bars colors
+        // create array of bars colors
         var colors2 = [];
         let min = Math.min.apply(null, myData);
         for (let i = 0; i < myData.length; i++) {
             let item = myData[i];
             colors2.push(colors[parseInt(item - min)])
         }
-
-
-
 
 
         var myChart = new Chart(ctx, {

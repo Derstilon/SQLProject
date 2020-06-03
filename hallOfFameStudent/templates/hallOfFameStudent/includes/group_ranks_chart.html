@@ -28,7 +28,7 @@
     </div>
     <div class="panel-block is-block" style="overflow-x: auto;">
         <div style="min-width: 600px;">
-        <canvas id="{{ chart_ID }}" width="300" height="{% widthratio chart_data|length 1 30 %}"></canvas>
+            <canvas id="{{ chart_ID }}" width="300" height="{% widthratio chart_data|length 1 30 %}"></canvas>
         </div>
     </div>
 </article>
@@ -83,12 +83,6 @@
     }
     console.log(chartDataset);
 
-
-    let yLabels = {
-        {#0: 'Michał Krawczyk', 1: 'Szymon Kania', 2: 'Jakub Niechaj',#}
-        {#3: 'Karol Hamielec', 4: 'Arkadiusz Cwikla', 5: 'Krzysztof Retkiewicz',#}
-        {#6: 'Mateusz Kowalski', 7: 'Darek Biela', 8: 'Krzysztof Bosak'#}
-    };
     let defaultsChart = {
         backgroundColor: [
             'rgba(255, 99, 132, 0.0)'
@@ -104,25 +98,12 @@
             reversed: true
         },
         data: {
-            labels: chartData.days.reverse().map((val)=>getPrettyDate(Date.parse(val))),
+            labels: chartData.days.reverse().map((val) => getPrettyDate(Date.parse(val))),
             datasets: chartDataset,
         },
         options: {
             scales: {
                 yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        steps: last,
-                        precision: 0,
-                        stepSize: 1,
-                        max: last,
-                        callback: function (value, index, values) {
-                            return yLabels[value];
-                        }
-                    },
-                    id: 'y_names',
-                    position: 'left'
-                }, {
                     ticks: {
                         min: 1,
                         steps: last,

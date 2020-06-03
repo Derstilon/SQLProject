@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block hero %}
-  {% with 'info' as primary_color %}
-  {{block.super}}
-  {% endwith %}
+    {% with 'info' as primary_color %}
+        {{ block.super }}
+    {% endwith %}
 {% endblock %}
 
 {% block brand %}
@@ -13,13 +13,13 @@
             <img src="{% static 'img/ostatniLearningInfo.png' %}" alt="Logo">
         </a>
         <div class="navbar-item is-hidden-desktop">
-        {% block mob_logout %}
-        <a href="{% url "lecturer:logout" %}" class="button is-{{ primary_color }} is-outlined is-inverted">
+            {% block mob_logout %}
+                <a href="{% url "lecturer:logout" %}" class="button is-{{ primary_color }} is-outlined is-inverted">
             <span class="icon">
                 <i class="fas fa-sign-out-alt"></i>
             </span>
-        </a>
-        {% endblock %}
+                </a>
+            {% endblock %}
         </div>
     </div>
 {% endblock %}

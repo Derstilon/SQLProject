@@ -23,7 +23,7 @@
                     {{ group_name }}
                 </a>
             </div>
-            <p class="is-hidden-mobile column is-4 has-text-centered">
+            <p class="column is-4 has-text-centered">
                 <span class="icon is-large is-size-4" style="color: #FFA6B8;">
                     <i class="fas fa-5x fa-pencil-alt"></i>
                 </span>
@@ -113,7 +113,7 @@
                             </span>
                             </td>
                             <td>
-                                {{ score.value|percent:exe.max_score|roundTo:2 }}%
+                                {{ score.value|percent:exe.max_score|round_to:2 }}%
                             </td>
                         </tr>
                     {% endwith %}

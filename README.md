@@ -116,18 +116,15 @@ def calc_all_stats(force, to_archive):
     query_students = StudentScore.objects.values("student__pk", 'exercise__group__pk',
                                                  'exercise__group__stat_score__pk',
                                                  'exercise__group__stat_score__max_score').annotate(score=Sum('value'))
+                                                 
     # Zapisanie wyników w osobnej tabeli z obliczeniem procentów
     objs = calc_student_score_group(query_students)
     #bulk_create - jedno zbiorcze zapytanie 
     StatGroupStudentScore.objects.bulk_create(objs)
 
-
     #Oblicznie średniej dla danej grupy z punktów studentów 
     query_group_avg = StatGroupStudentScore.objects.values(
         'stat_group__pk').annotate(mean_value=Avg('mean_value'), )
-    # SELECT "hallOfFameClient_statgroupstudentscore"."stat_group_id", AVG("hallOfFameClient_statgroupstudentscore"."mean_value") AS "mean_value" 
-    # FROM "hallOfFameClient_statgroupstudentscore" GROUP BY
-    # "hallOfFameClient_statgroupstudentscore"."stat_group_id"
 
     # Zapisanie wyników w osobnej tabeli
     objs = calc_avg_group(query_group_avg)
@@ -138,10 +135,6 @@ def calc_all_stats(force, to_archive):
     #Oblicznie średniej dla dane przedmiotu z średnich grup
     query_subject_avg = StatGroupScore.objects.values(
         'group__subject__pk').annotate(mean_value=Avg('mean_value'), )
-    # SELECT "hallOfFameClient_group"."subject_id", AVG("hallOfFameClient_statgroupscore"."mean_value") AS "mean_value" 
-    # FROM "hallOfFameClient_statgroupscore" 
-    # INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id") 
-    # GROUP BY "hallOfFameClient_group"."subject_id"
 
     # Zapisanie wyników w osobnej tabeli
     objs =calc_avg_subject(query_subject_avg)
@@ -154,13 +147,6 @@ def calc_all_stats(force, to_archive):
     query_subject_student = StatGroupStudentScore \
         .objects.values('student__pk',
                         'stat_group__group__subject__pk').annotate(mean_value=Avg('mean_value'), )
-    # SELECT "hallOfFameClient_statgroupstudentscore"."student_id", "hallOfFameClient_group"."subject_id",
-    #  AVG("hallOfFameClient_statgroupstudentscore"."mean_value") AS "mean_value" 
-    # FROM "hallOfFameClient_statgroupstudentscore" 
-    # INNER JOIN "hallOfFameClient_statgroupscore" ON ("hallOfFameClient_statgroupstudentscore"."stat_group_id" = "hallOfFameClient_statgroupscore"."id") 
-    # INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id")
-    #  GROUP BY "hallOfFameClient_statgroupstudentscore"."student_id",
-    #  "hallOfFameClient_group"."subject_id"
     
     # Zapisanie wyników w osobnej tabeli
     objs = calc_subject_student(query_subject_student)
@@ -189,4 +175,26 @@ INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_exercise"."group_id" =
 LEFT OUTER JOIN "hallOfFameClient_statgroupscore" ON ("hallOfFameClient_group"."id" = "hallOfFameClient_statgroupscore"."group_id")
 GROUP BY "hallOfFameClient_studentscore"."student_id", "hallOfFameClient_exercise"."group_id", "hallOfFameClient_statgroupscore"."id";
 
+/* StatGroupStudentScore.objects.values('stat_group__pk')
+ *                              .annotate(mean_value=Avg('mean_value'), ) */
+SELECT "hallOfFameClient_statgroupstudentscore"."stat_group_id", 
+AVG("hallOfFameClient_statgroupstudentscore"."mean_value") AS "mean_value" 
+FROM "hallOfFameClient_statgroupstudentscore" GROUP BY
+"hallOfFameClient_statgroupstudentscore"."stat_group_id"
+
+/* StatGroupScore.objects.values('group__subject__pk')
+ *                       .annotate(mean_value=Avg('mean_value'), ) */
+SELECT "hallOfFameClient_group"."subject_id", AVG("hallOfFameClient_statgroupscore"."mean_value") AS "mean_value" 
+FROM "hallOfFameClient_statgroupscore" 
+INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id") 
+GROUP BY "hallOfFameClient_group"."subject_id"
+
+/* StatGroupStudentScore.objects.values('student__pk', 'stat_group__group__subject__pk')
+ *                              .annotate(mean_value=Avg('mean_value'), ) */
+SELECT "hallOfFameClient_statgroupstudentscore"."student_id", "hallOfFameClient_group"."subject_id",
+AVG("hallOfFameClient_statgroupstudentscore"."mean_value") AS "mean_value" 
+FROM "hallOfFameClient_statgroupstudentscore" 
+INNER JOIN "hallOfFameClient_statgroupscore" ON ("hallOfFameClient_statgroupstudentscore"."stat_group_id" = "hallOfFameClient_statgroupscore"."id") 
+INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id")
+GROUP BY "hallOfFameClient_statgroupstudentscore"."student_id", "hallOfFameClient_group"."subject_id"
 ```

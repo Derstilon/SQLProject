@@ -104,7 +104,8 @@ def calc_all_stats(force, to_archive):
     clear_all_stats()
 
     # Oblicznie maxium ptk dla grupy z jej zadań
-    query_group = Group.objects.values('pk', ).annotate(max_score=Sum('exercises__max_score'))
+    query_group = Group.objects.values('pk', ) 
+                               .annotate(max_score=Sum('exercises__max_score'))
 
     # Zapisanie wyników w osobnej tabeli
     objs = calc_max_score_group(query_group)
@@ -114,8 +115,9 @@ def calc_all_stats(force, to_archive):
 
     #Oblicznie sumy punktów studenta w danej grupie 
     query_students = StudentScore.objects.values("student__pk", 'exercise__group__pk',
-                                                 'exercise__group__stat_score__pk',
-                                                 'exercise__group__stat_score__max_score').annotate(score=Sum('value'))
+                                          'exercise__group__stat_score__pk',
+                                          'exercise__group__stat_score__max_score') \
+                                         .annotate(score=Sum('value'))
                                                  
     # Zapisanie wyników w osobnej tabeli z obliczeniem procentów
     objs = calc_student_score_group(query_students)
@@ -144,9 +146,9 @@ def calc_all_stats(force, to_archive):
 
     #Oblicznie średniej dla dane przedmiotu z średnich studenta z grup w tym
     #przedmiocie 
-    query_subject_student = StatGroupStudentScore \
-        .objects.values('student__pk',
-                        'stat_group__group__subject__pk').annotate(mean_value=Avg('mean_value'), )
+    query_subject_student = StatGroupStudentScore.objects.values('student__pk',
+                                                  'stat_group__group__subject__pk') \
+                                                 .annotate(mean_value=Avg('mean_value'), )
     
     # Zapisanie wyników w osobnej tabeli
     objs = calc_subject_student(query_subject_student)
@@ -166,9 +168,8 @@ LEFT OUTER JOIN "hallOfFameClient_exercise"
  ON("hallOfFameClient_group"."id"="hallOfFameClient_exercise"."group_id") 
 GROUP BY "hallOfFameClient_group"."id";
 
-/* StudentScore.objects.values("student__pk", 'exercise__group__pk',
- *                                            'exercise__group__stat_score__pk',
- *                                            'exercise__group__stat_score__max_score').annotate(score=Sum('value')) */
+/* StudentScore.objects.values("student__pk", 'exercise__group__pk', 'exercise__group__stat_score__pk',
+ *                             'exercise__group__stat_score__max_score').annotate(score=Sum('value')) */
 SELECT "hallOfFameClient_studentscore"."student_id", 
  "hallOfFameClient_exercise"."group_id", "hallOfFameClient_statgroupscore"."id",
  "hallOfFameClient_statgroupscore"."max_score", SUM("hallOfFameClient_studentscore"."value") AS "score" 
@@ -187,7 +188,7 @@ GROUP BY "hallOfFameClient_studentscore"."student_id", "hallOfFameClient_exercis
 SELECT "hallOfFameClient_statgroupstudentscore"."stat_group_id", 
 AVG("hallOfFameClient_statgroupstudentscore"."mean_value") AS "mean_value" 
 FROM "hallOfFameClient_statgroupstudentscore" GROUP BY
-"hallOfFameClient_statgroupstudentscore"."stat_group_id"
+"hallOfFameClient_statgroupstudentscore"."stat_group_id";
 
 /* StatGroupScore.objects.values('group__subject__pk')
  *                       .annotate(mean_value=Avg('mean_value'), ) */
@@ -196,7 +197,7 @@ SELECT "hallOfFameClient_group"."subject_id",
 FROM "hallOfFameClient_statgroupscore" 
 INNER JOIN "hallOfFameClient_group" 
  ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id") 
-GROUP BY "hallOfFameClient_group"."subject_id"
+GROUP BY "hallOfFameClient_group"."subject_id";
 
 /* StatGroupStudentScore.objects.values('student__pk', 'stat_group__group__subject__pk')
  *                              .annotate(mean_value=Avg('mean_value'), ) */
@@ -207,5 +208,5 @@ INNER JOIN "hallOfFameClient_statgroupscore"
  ON ("hallOfFameClient_statgroupstudentscore"."stat_group_id" = "hallOfFameClient_statgroupscore"."id") 
 INNER JOIN "hallOfFameClient_group" 
  ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id")
-GROUP BY "hallOfFameClient_statgroupstudentscore"."student_id", "hallOfFameClient_group"."subject_id"
+GROUP BY "hallOfFameClient_statgroupstudentscore"."student_id", "hallOfFameClient_group"."subject_id";
 ```

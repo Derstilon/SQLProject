@@ -105,9 +105,6 @@ def calc_all_stats(force, to_archive):
 
     # Oblicznie maxium ptk dla grupy z jej zadań
     query_group = Group.objects.values('pk', ).annotate(max_score=Sum('exercises__max_score'))
-    # SELECT "hallOfFameClient_group"."id", SUM("hallOfFameClient_exercise"."max_score") AS "max_score" 
-    # FROM "hallOfFameClient_group" 
-    # LEFT OUTER JOIN "hallOfFameClient_exercise" ON("hallOfFameClient_group"."id"="hallOfFameClient_exercise"."group_id") GROUP BY "hallOfFameClient_group"."id"
 
     # Zapisanie wyników w osobnej tabeli
     objs = calc_max_score_group(query_group)
@@ -119,15 +116,6 @@ def calc_all_stats(force, to_archive):
     query_students = StudentScore.objects.values("student__pk", 'exercise__group__pk',
                                                  'exercise__group__stat_score__pk',
                                                  'exercise__group__stat_score__max_score').annotate(score=Sum('value'))
-    # SELECT "hallOfFameClient_studentscore"."student_id", 
-    # "hallOfFameClient_exercise"."group_id", "hallOfFameClient_statgroupscore"."id",
-    #  "hallOfFameClient_statgroupscore"."max_score", SUM("hallOfFameClient_studentscore"."value") AS "score" 
-    #  FROM "hallOfFameClient_studentscore"
-    #  INNER JOIN "hallOfFameClient_exercise"  ON ("hallOfFameClient_studentscore"."exercise_id" = "hallOfFameClient_exercise"."id") 
-    #  INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_exercise"."group_id" = "hallOfFameClient_group"."id") 
-    #  LEFT OUTER JOIN "hallOfFameClient_statgroupscore" ON ("hallOfFameClient_group"."id" = "hallOfFameClient_statgroupscore"."group_id")
-    #   GROUP BY "hallOfFameClient_studentscore"."student_id", "hallOfFameClient_exercise"."group_id", "hallOfFameClient_statgroupscore"."id"
-
     # Zapisanie wyników w osobnej tabeli z obliczeniem procentów
     objs = calc_student_score_group(query_students)
     #bulk_create - jedno zbiorcze zapytanie 
@@ -184,8 +172,21 @@ def calc_all_stats(force, to_archive):
 ```
 ### Generowany kod SQL
 ```sql
-    /* Group.objects.values('pk', ).annotate(max_score=Sum('exercises__max_score')) */
-    SELECT "hallOfFameClient_group"."id", SUM("hallOfFameClient_exercise"."max_score") AS "max_score" 
-    FROM "hallOfFameClient_group" 
-    LEFT OUTER JOIN "hallOfFameClient_exercise" ON("hallOfFameClient_group"."id"="hallOfFameClient_exercise"."group_id") GROUP BY "hallOfFameClient_group"."id"
+/* Group.objects.values('pk', ).annotate(max_score=Sum('exercises__max_score')) */
+SELECT "hallOfFameClient_group"."id", SUM("hallOfFameClient_exercise"."max_score") AS "max_score" 
+FROM "hallOfFameClient_group" 
+LEFT OUTER JOIN "hallOfFameClient_exercise" ON("hallOfFameClient_group"."id"="hallOfFameClient_exercise"."group_id") GROUP BY "hallOfFameClient_group"."id";
+
+/* StudentScore.objects.values("student__pk", 'exercise__group__pk',
+ *                                            'exercise__group__stat_score__pk',
+ *                                            'exercise__group__stat_score__max_score').annotate(score=Sum('value')) */
+SELECT "hallOfFameClient_studentscore"."student_id", 
+"hallOfFameClient_exercise"."group_id", "hallOfFameClient_statgroupscore"."id",
+"hallOfFameClient_statgroupscore"."max_score", SUM("hallOfFameClient_studentscore"."value") AS "score" 
+FROM "hallOfFameClient_studentscore"
+INNER JOIN "hallOfFameClient_exercise"  ON ("hallOfFameClient_studentscore"."exercise_id" = "hallOfFameClient_exercise"."id") 
+INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_exercise"."group_id" = "hallOfFameClient_group"."id") 
+LEFT OUTER JOIN "hallOfFameClient_statgroupscore" ON ("hallOfFameClient_group"."id" = "hallOfFameClient_statgroupscore"."group_id")
+GROUP BY "hallOfFameClient_studentscore"."student_id", "hallOfFameClient_exercise"."group_id", "hallOfFameClient_statgroupscore"."id";
+
 ```

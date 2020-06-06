@@ -24,16 +24,15 @@ PostgreSQL zalicza się do baz typu RDBMS (Relational Database Management System
 ### Schemat bazy danych
 ![scheme](scheme.png)
 
-### Opis wybranej funkcji i generowany kod SQL
+### Opis wybranej funkcji
 
+#### Funkcje pomocnicze
 ```py
-#Funkcje pomocnicze
 def clear_all_stats():
     StatGroupScore.objects.all().delete()
     StatGroupStudentScore.objects.all().delete()
     StatSubjectScore.objects.all().delete()
     StatSubjectStudentScore.objects.all().delete()
-
 
 def calc_max_score_group(query_group):
     objs = []
@@ -44,7 +43,6 @@ def calc_max_score_group(query_group):
         obj.mean_value = 0
         objs.append(obj)
     return objs
-
 
 def calc_student_score_group(query_students):
     objs = []
@@ -58,7 +56,6 @@ def calc_student_score_group(query_students):
         objs.append(obj)
     return objs
 
-
 def calc_avg_group(query_group_avg):
     objs = []
     for res in query_group_avg:
@@ -66,7 +63,6 @@ def calc_avg_group(query_group_avg):
         obj.mean_value = res['mean_value']
         objs.append(obj)
     return objs
-
 
 def calc_avg_subject(query_subject_avg):
     objs = []
@@ -77,7 +73,6 @@ def calc_avg_subject(query_subject_avg):
         objs.append(obj)
     return objs
 
-
 def calc_subject_student(query_subject_student):
     objs = []
     for res in query_subject_student:
@@ -87,9 +82,10 @@ def calc_subject_student(query_subject_student):
         obj.mean_value = res['mean_value']
         objs.append(obj)
     return objs
+```
 
-
-#Główna funkcja
+#### Główna funkcja
+```py
 def calc_all_stats(force, to_archive):
     print("Trying calculate")
     curr_date = timezone.now()
@@ -185,4 +181,11 @@ def calc_all_stats(force, to_archive):
 
     if to_archive:
         arch_stats(curr_date)
+```
+### Generowany kod SQL
+```sql
+    // Group.objects.values('pk', ).annotate(max_score=Sum('exercises__max_score'))
+    SELECT "hallOfFameClient_group"."id", SUM("hallOfFameClient_exercise"."max_score") AS "max_score" 
+    FROM "hallOfFameClient_group" 
+    LEFT OUTER JOIN "hallOfFameClient_exercise" ON("hallOfFameClient_group"."id"="hallOfFameClient_exercise"."group_id") GROUP BY "hallOfFameClient_group"."id"
 ```

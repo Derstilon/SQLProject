@@ -158,22 +158,29 @@ def calc_all_stats(force, to_archive):
 ```
 ### Generowany kod SQL
 ```sql
-/* Group.objects.values('pk', ).annotate(max_score=Sum('exercises__max_score')) */
+/* Group.objects.values('pk', )
+ *              .annotate(max_score=Sum('exercises__max_score')) */
 SELECT "hallOfFameClient_group"."id", SUM("hallOfFameClient_exercise"."max_score") AS "max_score" 
 FROM "hallOfFameClient_group" 
-LEFT OUTER JOIN "hallOfFameClient_exercise" ON("hallOfFameClient_group"."id"="hallOfFameClient_exercise"."group_id") GROUP BY "hallOfFameClient_group"."id";
+LEFT OUTER JOIN "hallOfFameClient_exercise" 
+ ON("hallOfFameClient_group"."id"="hallOfFameClient_exercise"."group_id") 
+GROUP BY "hallOfFameClient_group"."id";
 
 /* StudentScore.objects.values("student__pk", 'exercise__group__pk',
  *                                            'exercise__group__stat_score__pk',
  *                                            'exercise__group__stat_score__max_score').annotate(score=Sum('value')) */
 SELECT "hallOfFameClient_studentscore"."student_id", 
-"hallOfFameClient_exercise"."group_id", "hallOfFameClient_statgroupscore"."id",
-"hallOfFameClient_statgroupscore"."max_score", SUM("hallOfFameClient_studentscore"."value") AS "score" 
+ "hallOfFameClient_exercise"."group_id", "hallOfFameClient_statgroupscore"."id",
+ "hallOfFameClient_statgroupscore"."max_score", SUM("hallOfFameClient_studentscore"."value") AS "score" 
 FROM "hallOfFameClient_studentscore"
-INNER JOIN "hallOfFameClient_exercise"  ON ("hallOfFameClient_studentscore"."exercise_id" = "hallOfFameClient_exercise"."id") 
-INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_exercise"."group_id" = "hallOfFameClient_group"."id") 
-LEFT OUTER JOIN "hallOfFameClient_statgroupscore" ON ("hallOfFameClient_group"."id" = "hallOfFameClient_statgroupscore"."group_id")
-GROUP BY "hallOfFameClient_studentscore"."student_id", "hallOfFameClient_exercise"."group_id", "hallOfFameClient_statgroupscore"."id";
+INNER JOIN "hallOfFameClient_exercise"  
+ ON ("hallOfFameClient_studentscore"."exercise_id" = "hallOfFameClient_exercise"."id") 
+INNER JOIN "hallOfFameClient_group" 
+ ON ("hallOfFameClient_exercise"."group_id" = "hallOfFameClient_group"."id") 
+LEFT OUTER JOIN "hallOfFameClient_statgroupscore" 
+ ON ("hallOfFameClient_group"."id" = "hallOfFameClient_statgroupscore"."group_id")
+GROUP BY "hallOfFameClient_studentscore"."student_id", "hallOfFameClient_exercise"."group_id", 
+ "hallOfFameClient_statgroupscore"."id";
 
 /* StatGroupStudentScore.objects.values('stat_group__pk')
  *                              .annotate(mean_value=Avg('mean_value'), ) */
@@ -184,17 +191,21 @@ FROM "hallOfFameClient_statgroupstudentscore" GROUP BY
 
 /* StatGroupScore.objects.values('group__subject__pk')
  *                       .annotate(mean_value=Avg('mean_value'), ) */
-SELECT "hallOfFameClient_group"."subject_id", AVG("hallOfFameClient_statgroupscore"."mean_value") AS "mean_value" 
+SELECT "hallOfFameClient_group"."subject_id", 
+ AVG("hallOfFameClient_statgroupscore"."mean_value") AS "mean_value" 
 FROM "hallOfFameClient_statgroupscore" 
-INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id") 
+INNER JOIN "hallOfFameClient_group" 
+ ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id") 
 GROUP BY "hallOfFameClient_group"."subject_id"
 
 /* StatGroupStudentScore.objects.values('student__pk', 'stat_group__group__subject__pk')
  *                              .annotate(mean_value=Avg('mean_value'), ) */
 SELECT "hallOfFameClient_statgroupstudentscore"."student_id", "hallOfFameClient_group"."subject_id",
-AVG("hallOfFameClient_statgroupstudentscore"."mean_value") AS "mean_value" 
+ AVG("hallOfFameClient_statgroupstudentscore"."mean_value") AS "mean_value" 
 FROM "hallOfFameClient_statgroupstudentscore" 
-INNER JOIN "hallOfFameClient_statgroupscore" ON ("hallOfFameClient_statgroupstudentscore"."stat_group_id" = "hallOfFameClient_statgroupscore"."id") 
-INNER JOIN "hallOfFameClient_group" ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id")
+INNER JOIN "hallOfFameClient_statgroupscore" 
+ ON ("hallOfFameClient_statgroupstudentscore"."stat_group_id" = "hallOfFameClient_statgroupscore"."id") 
+INNER JOIN "hallOfFameClient_group" 
+ ON ("hallOfFameClient_statgroupscore"."group_id" = "hallOfFameClient_group"."id")
 GROUP BY "hallOfFameClient_statgroupstudentscore"."student_id", "hallOfFameClient_group"."subject_id"
 ```

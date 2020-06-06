@@ -19,4 +19,7 @@ Django to framework do języka python przeznaczony do tworzenia aplikacji intern
 Realizuje wzorzec MTV (model-template-view).
 
 ### Baza PostgreSQL
-PostgreSQL zalicza się do baz typu RDBMS (Relational Database Management System) z rozszerzeniami obiektowymi. 
+PostgreSQL zalicza się do baz typu RDBMS (Relational Database Management System) z rozszerzeniami obiektowymi.  
+
+### Schemat bazy danych
+![scheme](scheme.png)

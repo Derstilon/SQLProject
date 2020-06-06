@@ -184,7 +184,7 @@ def calc_all_stats(force, to_archive):
 ```
 ### Generowany kod SQL
 ```sql
-    // Group.objects.values('pk', ).annotate(max_score=Sum('exercises__max_score'))
+    /* Group.objects.values('pk', ).annotate(max_score=Sum('exercises__max_score')) */
     SELECT "hallOfFameClient_group"."id", SUM("hallOfFameClient_exercise"."max_score") AS "max_score" 
     FROM "hallOfFameClient_group" 
     LEFT OUTER JOIN "hallOfFameClient_exercise" ON("hallOfFameClient_group"."id"="hallOfFameClient_exercise"."group_id") GROUP BY "hallOfFameClient_group"."id"
